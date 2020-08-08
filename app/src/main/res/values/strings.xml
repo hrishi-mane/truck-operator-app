@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Truck Operator</string>
+    <string name="string_enter_plant_code">Enter Plant Code</string>
+    <string name="string_enter_vehicle_number">Enter Vehicle Number</string>
+    <string name="string_start_location">Start Location</string>
+    <string name="collection_name">Truck Locations </string>
+    <string name="string_start_screen_heading">TrackTM</string>
+    <string name="string_location_tracking_started">Location Tracking Started.....</string>
+
+</resources>

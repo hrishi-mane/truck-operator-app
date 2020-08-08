@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "656391420194",
+    "firebase_url": "https://tracktm-e8c94.firebaseio.com",
+    "project_id": "tracktm-e8c94",
+    "storage_bucket": "tracktm-e8c94.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656391420194:android:fd1dc60eb6fa94ad048d7b",
+        "android_client_info": {
+          "package_name": "com.example.tracktmtruckoperator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "656391420194-0r24thom6bd9hoi71pauin6pfebg4nan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA880Z0C9nHu1_kpL1LQxu_ZO072Rm-sKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "656391420194-0r24thom6bd9hoi71pauin6pfebg4nan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
