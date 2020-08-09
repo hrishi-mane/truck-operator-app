@@ -22,6 +22,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInput_plant_code"
+            style="@style/style_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -32,7 +33,7 @@
                 android:id="@+id/editText_plant_code"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+
                 android:inputType="number"
                 android:maxLines="1"
                 app:errorEnabled="true"/>
@@ -40,6 +41,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInput_vehicle_number"
+            style="@style/style_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -49,7 +51,7 @@
                 android:id="@+id/editText_Vehicle_Number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+
                 app:errorEnabled="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
