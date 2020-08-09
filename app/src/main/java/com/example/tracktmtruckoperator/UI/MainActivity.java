@@ -109,7 +109,6 @@ public class MainActivity extends AppCompatActivity {
                     getLastKnownLocation();
                     Intent intent = new Intent(MainActivity.this, LocationActivity.class);
                     startActivity(intent);
-                    finish();
                 }
 
             }

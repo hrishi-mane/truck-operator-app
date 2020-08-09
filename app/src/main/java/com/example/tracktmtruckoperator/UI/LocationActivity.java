@@ -18,6 +18,7 @@ public class LocationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
         startLocationService();
+
     }
 
     private void startLocationService() {

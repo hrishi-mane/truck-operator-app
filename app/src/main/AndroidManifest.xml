@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".UI.StartScreen"
-            >
+        <activity android:name=".UI.StartScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".UI.MainActivity"
-                />
+            android:windowSoftInputMode="adjustPan"/>
 
         <activity android:name=".UI.LocationActivity" />
 
