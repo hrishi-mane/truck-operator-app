@@ -98,11 +98,6 @@ public class LocationService extends Service {
     private void updateFireStore(Location location) {
         GeoPoint curr_geo_point = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-        updateDoc(curr_geo_point);
-    }
-
-    private void updateDoc(GeoPoint curr_geo_point) {
-
         DocumentReference curr_user_doc = FirebaseFirestore.getInstance().
                 collection(getResources().getString(R.string.collection_name))
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -120,4 +115,6 @@ public class LocationService extends Service {
         });
 
     }
+
+
 }

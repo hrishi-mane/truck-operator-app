@@ -5,6 +5,7 @@
     <string name="string_start_location">Start Location</string>
     <string name="collection_name">Truck Locations </string>
     <string name="string_start_screen_heading">TrackTM</string>
-    <string name="string_location_tracking_started">Location Tracking Started.....</string>
+    <string name="error_message">Field cannot be empty</string>
+    <string name="string_location_service_running">Location Service Running...</string>
 
 </resources>

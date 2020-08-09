@@ -10,9 +10,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,7 +22,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.tracktmtruckoperator.DATA_MODEL.Truck_Location;
 import com.example.tracktmtruckoperator.R;
-import com.example.tracktmtruckoperator.SERVICES.LocationService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,6 +29,9 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -41,20 +42,38 @@ import static com.example.tracktmtruckoperator.Constants.PERMISSION_REQUEST_ENAB
 
 public class MainActivity extends AppCompatActivity {
 
-    Button enable_location;
-    EditText plant_code, vehicle_number;
+
+    MaterialButton enable_location;
+
+    TextInputEditText plant_code, vehicle_number;
+    TextInputLayout layout_plant_code, layout_vehicle_number;
 
     FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
+
+    Location location;
+
+
+    final Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        enable_location = (Button) findViewById(R.id.button_location);
-        plant_code = (EditText) findViewById(R.id.editText_plant_code);
-        vehicle_number = (EditText) findViewById(R.id.editText_Vehicle_Number);
+        location = new Location(LocationManager.GPS_PROVIDER);
+
+        location.setLatitude(19.948636);
+        location.setLongitude(73.790575);
+
+        enable_location = findViewById(R.id.button_location);
+
+        layout_plant_code = findViewById(R.id.textInput_plant_code);
+        layout_vehicle_number = findViewById(R.id.textInput_vehicle_number);
+
+        plant_code =findViewById(R.id.editText_plant_code);
+        vehicle_number =findViewById(R.id.editText_Vehicle_Number);
+
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -62,11 +81,41 @@ public class MainActivity extends AppCompatActivity {
         enable_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getLastKnownLocation();
-                Toast.makeText(MainActivity.this, "Location Started", Toast.LENGTH_SHORT).show();
-                Toast.makeText(MainActivity.this, "Clear the app from background to stop location service", Toast.LENGTH_SHORT).show();
+                if (plant_code.getText().toString().isEmpty()) {
+                    layout_plant_code.setError(getString(R.string.error_message));
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            layout_plant_code.setError(null);
+                        }
+                    }, 2000);
+
+
+                }
+                else if(vehicle_number.getText().toString().isEmpty()){
+                    layout_vehicle_number.setError(getString(R.string.error_message));
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            layout_vehicle_number.setError(null);
+                        }
+                    }, 2000);
+                }
+                else {
+                    getLastKnownLocation();
+                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
             }
         });
+
+
     }
 
 
@@ -79,42 +128,11 @@ public class MainActivity extends AppCompatActivity {
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                Location location = task.getResult();
-                if(location != null){
-                    addToFireStore(location);
-                    startLocationService();
-                }
-                else{
-                    Toast.makeText(MainActivity.this, "Error in Retrieving Location. Please Restart application.", Toast.LENGTH_SHORT).show();
-                }
+                addToFireStore(location);
 
             }
         });
 
-    }
-
-    private void startLocationService() {
-        if(!isLocationServiceRunning()){
-            Intent serviceIntent = new Intent(this , LocationService.class);
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
-                startForegroundService(serviceIntent);
-            }else{
-
-                startService(serviceIntent);
-            }
-        }
-    }
-
-    private boolean isLocationServiceRunning() {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if("com.example.tracktmtruckoperator.SERVICES.LocationService".equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private void addToFireStore(Location location) {
@@ -205,10 +223,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         if (checkServices()) {
             getLocationPermission();
         }
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(isLocationServiceRunning()){
+            startActivity(new Intent(MainActivity.this, LocationActivity.class));
+        }
+    }
 
+    private boolean isLocationServiceRunning() {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if("com.example.tracktmtruckoperator.SERVICES.LocationService".equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
