@@ -21,7 +21,10 @@
         </activity>
 
         <activity android:name=".UI.MainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan">
+
+
+        </activity>
 
         <activity android:name=".UI.LocationActivity" />
 

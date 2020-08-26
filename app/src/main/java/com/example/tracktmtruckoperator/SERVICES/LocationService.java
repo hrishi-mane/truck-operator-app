@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
-import com.example.tracktmtruckoperator.R;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -26,7 +25,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
@@ -37,6 +35,7 @@ import static com.example.tracktmtruckoperator.Constants.UPDATE_INTERVAL;
 public class LocationService extends Service {
 
     FusedLocationProviderClient locationObject;
+    String documentId;
 
     @Nullable
     @Override
@@ -66,6 +65,7 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         startLocation();
+        documentId = intent.getStringExtra("user_doc_id");
         return START_NOT_STICKY;
     }
 
@@ -99,8 +99,8 @@ public class LocationService extends Service {
         GeoPoint curr_geo_point = new GeoPoint(location.getLatitude(), location.getLongitude());
 
         DocumentReference curr_user_doc = FirebaseFirestore.getInstance().
-                collection(getResources().getString(R.string.collection_name))
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                collection("Session")
+                .document("session123").collection("Users").document(documentId);
 
         curr_user_doc.update("geoPoint", curr_geo_point).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

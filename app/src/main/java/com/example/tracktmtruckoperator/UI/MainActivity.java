@@ -9,18 +9,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import com.example.tracktmtruckoperator.DATA_MODEL.Truck_Location;
 import com.example.tracktmtruckoperator.R;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
@@ -36,6 +36,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.Objects;
+
 import static com.example.tracktmtruckoperator.Constants.ERROR_DIALOG_REQUEST;
 import static com.example.tracktmtruckoperator.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static com.example.tracktmtruckoperator.Constants.PERMISSION_REQUEST_ENABLE_GPS;
@@ -45,13 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
     MaterialButton enable_location;
 
-    TextInputEditText plant_code, vehicle_number;
-    TextInputLayout layout_plant_code, layout_vehicle_number;
+    TextInputEditText user_id;
+    TextInputLayout layout_user_id;
 
     FirebaseFirestore firebaseFirestore;
     FirebaseAuth firebaseAuth;
 
     Location location;
+    GeoPoint var_geoPoint;
 
 
     final Handler handler = new Handler();
@@ -68,62 +71,48 @@ public class MainActivity extends AppCompatActivity {
 
         enable_location = findViewById(R.id.button_location);
 
-        layout_plant_code = findViewById(R.id.textInput_plant_code);
-        layout_vehicle_number = findViewById(R.id.textInput_vehicle_number);
-
-        plant_code =findViewById(R.id.editText_plant_code);
-        vehicle_number =findViewById(R.id.editText_Vehicle_Number);
+        layout_user_id = findViewById(R.id.textInput_user_id);
+        user_id =findViewById(R.id.editText_user_id);
 
 
         firebaseFirestore = FirebaseFirestore.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
         enable_location.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                if (plant_code.getText().toString().isEmpty()) {
-                    layout_plant_code.setError(getString(R.string.error_message));
+                if (Objects.requireNonNull(user_id.getText()).toString().isEmpty()) {
+                    layout_user_id.setError(getString(R.string.error_message));
 
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
 
-                            layout_plant_code.setError(null);
-                        }
-                    }, 2000);
-
-
-                }
-                else if(vehicle_number.getText().toString().isEmpty()){
-                    layout_vehicle_number.setError(getString(R.string.error_message));
-
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-
-                            layout_vehicle_number.setError(null);
+                            layout_user_id.setError(null);
                         }
                     }, 2000);
                 }
                 else {
                     getLastKnownLocation();
-                    Intent intent = new Intent(MainActivity.this, LocationActivity.class);
-                    startActivity(intent);
+
                 }
 
             }
         });
-
-
     }
 
 
     private void getLastKnownLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED && ActivityCompat.
+                checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) !=
+                PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
-        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+        FusedLocationProviderClient fusedLocationProviderClient = LocationServices.
+                getFusedLocationProviderClient(this);
         fusedLocationProviderClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
@@ -135,24 +124,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addToFireStore(Location location) {
-        String var_plant_id = plant_code.getText().toString();
-        String var_vehicle_number = vehicle_number.getText().toString();
-        GeoPoint var_geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
-        Truck_Location mTruckLocation = new Truck_Location(var_geoPoint,var_plant_id, var_vehicle_number );
-
-
-        firebaseFirestore.collection(getResources().getString(R.string.collection_name)).
-                document(firebaseAuth.getCurrentUser().getUid()).
-                set(mTruckLocation).addOnSuccessListener(new OnSuccessListener<Void>() {
+        var_geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
+        firebaseFirestore.collection("Session").
+                document("session123").collection("Users").document(user_id.getText().toString()).
+                update("geoPoint",var_geoPoint).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                Intent intent = new Intent(MainActivity.this, LocationActivity.class);
+                intent.putExtra("user_doc_id", user_id.getText().toString());
+                startActivity(intent);
             }
         });
     }
 
     private void getLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
+        if (ActivityCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,

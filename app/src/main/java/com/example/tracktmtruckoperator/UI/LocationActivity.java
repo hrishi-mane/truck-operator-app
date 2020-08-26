@@ -24,6 +24,7 @@ public class LocationActivity extends AppCompatActivity {
     private void startLocationService() {
         if(!isLocationServiceRunning()){
             Intent serviceIntent = new Intent(this , LocationService.class);
+            serviceIntent.putExtra("user_doc_id", getIntent().getStringExtra("user_doc_id"));
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O){
                 startForegroundService(serviceIntent);
@@ -47,5 +48,8 @@ public class LocationActivity extends AppCompatActivity {
         return false;
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

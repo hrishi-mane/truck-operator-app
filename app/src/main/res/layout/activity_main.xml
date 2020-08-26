@@ -21,39 +21,24 @@
         android:layout_marginTop="200dp">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInput_plant_code"
+            android:id="@+id/textInput_user_id"
             style="@style/style_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="@string/string_enter_plant_code"
+            android:hint="Enter ID"
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_plant_code"
+                android:id="@+id/editText_user_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
-                android:inputType="number"
                 android:maxLines="1"
                 app:errorEnabled="true"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInput_vehicle_number"
-            style="@style/style_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp"
-            android:hint="@string/string_enter_vehicle_number">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editText_Vehicle_Number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                app:errorEnabled="true"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
         <RelativeLayout
             android:layout_marginTop="10dp"
