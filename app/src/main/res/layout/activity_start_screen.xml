@@ -6,24 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".UI.StartScreen">
 
-    <TextView
-        android:id="@+id/textview_account_creation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <ProgressBar
-        android:id="@+id/progressBar2"
-        android:layout_width="41dp"
-        android:layout_height="32dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/textview_account_creation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView_heading"
@@ -34,10 +16,10 @@
         android:text="@string/string_start_screen_heading"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="40sp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.725" />
+        app:layout_constraintVertical_bias="0.62" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

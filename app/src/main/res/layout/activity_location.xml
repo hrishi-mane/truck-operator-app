@@ -7,30 +7,63 @@
     tools:context=".UI.LocationActivity"
     >
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/location_activity_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menu="@menu/activity_location_toolbar_menu"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
+            android:background="?attr/colorPrimary"
+            tools:layout_editor_absoluteX="171dp"
+            tools:layout_editor_absoluteY="68dp">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/location_progress_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/string_location_service_running"
         android:textColor="@android:color/black"
         android:textStyle="bold"
         android:textSize="18sp"
-        android:layout_marginTop="285dp"
+        android:visibility="invisible"
+        android:layout_marginTop="150dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ProgressBar
-        android:id="@+id/progressBar"
+        android:id="@+id/location_progressBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-
         android:layout_marginTop="20dp"
         android:indeterminate="true"
+        android:visibility="invisible"
         android:progressTint="@color/colorAccent"
         android:secondaryProgressTint="@color/colorPrimaryDark"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="@+id/location_progress_textview"
+        app:layout_constraintStart_toStartOf="@+id/location_progress_textview"
+        app:layout_constraintTop_toBottomOf="@+id/location_progress_textview" />
+
+    <Button
+        android:id="@+id/start_location_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="316dp"
+        android:text="Start Location"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/location_progressBar" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

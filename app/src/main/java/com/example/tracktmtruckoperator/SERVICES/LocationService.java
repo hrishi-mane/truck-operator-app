@@ -37,6 +37,7 @@ public class LocationService extends Service {
     FusedLocationProviderClient locationObject;
     String documentId;
 
+    LocationCallback startLocationCallback;
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,9 +57,11 @@ public class LocationService extends Service {
             getSystemService(NotificationManager.class).createNotificationChannel(channel);
 
             Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                    .setContentTitle("Location Service").setContentText("Location Service is Running in background.Clear the app to stop.").build();
+                    .setContentTitle("Location Service").setContentText("Location Service is Running in background." +
+                            "Clear the app to stop.").build();
 
             startForeground(1, notification);
+
         }
     }
 
@@ -82,7 +85,8 @@ public class LocationService extends Service {
                         PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        locationObject.requestLocationUpdates(mLocationRequestHighAccuracy, new LocationCallback() {
+
+        startLocationCallback = new LocationCallback(){
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 Location curr_location = locationResult.getLastLocation();
@@ -92,7 +96,9 @@ public class LocationService extends Service {
 
                 }
             }
-        }, Looper.myLooper());
+        };
+
+        locationObject.requestLocationUpdates(mLocationRequestHighAccuracy,startLocationCallback,Looper.myLooper());
     }
 
     private void updateFireStore(Location location) {
@@ -116,5 +122,11 @@ public class LocationService extends Service {
 
     }
 
+    @Override
+    public void onDestroy() {
 
+        locationObject.removeLocationUpdates(startLocationCallback);
+        super.onDestroy();
+
+    }
 }

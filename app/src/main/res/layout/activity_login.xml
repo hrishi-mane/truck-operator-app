@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView
+    android:id="@+id/scrollview_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="UI.MainActivity"
+    tools:context=".UI.LoginActivity"
     >
 
     <LinearLayout
@@ -26,14 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
-            android:hint="Enter ID"
+            android:hint="Enter Your Unique ID"
             >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editText_user_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:maxLines="1"
                 app:errorEnabled="true"/>
         </com.google.android.material.textfield.TextInputLayout>
